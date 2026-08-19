@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS Enterprise Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --text-main: #f8fafc;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.2);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .badge-active { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+        .badge-purple { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+    </style>
+</head>
+<body className="py-4">
+
+    <!-- Header Navigation -->
+    <div className="container mb-4">
+        <div className="glass-card p-3 d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center gap-3">
+                <div className="bg-primary text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i className="bi bi-person-badge fs-4"></i>
+                </div>
+                <div>
+                    <h5 className="fw-bold mb-0 text-white">Hello, Admin 👋</h5>
+                    <small className="text-white-50">Welcome back to Enterprise EMS</small>
+                </div>
+            </div>
+            <div className="d-flex gap-2">
+                <a href="/employees" className="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <i className="bi bi-people me-1"></i> Directory
+                </a>
+                <a href="/swagger-ui.html" target="_blank" className="btn btn-primary btn-sm rounded-pill px-3" style="background: var(--accent-purple); border: none;">
+                    <i className="bi bi-code-slash me-1"></i> API Docs
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div className="container">
+
+        <!-- Stat KPI Cards -->
+        <div className="row g-4 mb-4">
+            <!-- Total Employees -->
+            <div className="col-md-3">
+                <div className="glass-card p-4">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span className="text-white-50 small text-uppercase font-monospace">Total Staff</span>
+                            <h2 className="fw-bold text-white mb-0 mt-1" th:text="${metrics.totalEmployees}">0</h2>
+                        </div>
+                        <div className="stat-icon bg-primary bg-opacity-25 text-primary">
+                            <i className="bi bi-people"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Employees -->
+            <div className="col-md-3">
+                <div className="glass-card p-4">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span className="text-white-50 small text-uppercase font-monospace">Active Status</span>
+                            <h2 className="fw-bold text-success mb-0 mt-1" th:text="${metrics.activeEmployees}">0</h2>
+                        </div>
+                        <div className="stat-icon bg-success bg-opacity-25 text-success">
+                            <i className="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Departments -->
+            <div className="col-md-3">
+                <div className="glass-card p-4">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span className="text-white-50 small text-uppercase font-monospace">Departments</span>
+                            <h2 className="fw-bold text-warning mb-0 mt-1" th:text="${metrics.totalDepartments}">0</h2>
+                        </div>
+                        <div className="stat-icon bg-warning bg-opacity-25 text-warning">
+                            <i className="bi bi-building"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Average Salary -->
+            <div className="col-md-3">
+                <div className="glass-card p-4">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span className="text-white-50 small text-uppercase font-monospace">Avg Salary</span>
+                            <h2 className="fw-bold text-info mb-0 mt-1" th:text="${'$' + #numbers.formatDecimal(metrics.averageSalary, 1, 'COMMA', 0, 'POINT')}">$0</h2>
+                        </div>
+                        <div className="stat-icon bg-info bg-opacity-25 text-info">
+                            <i className="bi bi-cash-stack"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div className="row g-4">
+            <!-- Department Distribution Chart -->
+            <div className="col-md-6">
+                <div className="glass-card p-4">
+                    <h5 className="fw-bold text-white mb-3"><i className="bi bi-pie-chart me-2 text-primary"></i>Department Breakdown</h5>
+                    <div style="height: 280px; position: relative;">
+                        <canvas id="deptChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Designation Breakdown Chart -->
+            <div className="col-md-6">
+                <div className="glass-card p-4">
+                    <h5 className="fw-bold text-white mb-3"><i className="bi bi-bar-chart me-2 text-purple"></i>Designation Distribution</h5>
+                    <div style="height: 280px; position: relative;">
+                        <canvas id="designationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chart.js Initialization Script -->
+    <script th:inline="javascript">
+        /* fetch department data from Thymeleaf model */
+        const deptData = /*[[${metrics.departmentDistribution}]]*/ {};
+        const designationData = /*[[${metrics.designationDistribution}]]*/ {};
+
+        // Department Doughnut Chart
+        const deptCtx = document.getElementById('deptChart').getContext('2d');
+        new Chart(deptCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(deptData),
+                datasets: [{
+                    data: Object.values(deptData),
+                    backgroundColor: ['#8b5cf6', '#ec4899', '#3b82f6', '#10b981', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#cbd5e1' } }
+                }
+            }
+        });
+
+        // Designation Bar Chart
+        const desigCtx = document.getElementById('designationChart').getContext('2d');
+        new Chart(desigCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(designationData),
+                datasets: [{
+                    label: 'Employees',
+                    data: Object.values(designationData),
+                    backgroundColor: '#6366f1',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { ticks: { color: '#cbd5e1' }, grid: { display: false } },
+                    y: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

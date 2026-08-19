@@ -1,0 +1,50 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.Employee;
+import com.example.demo.service.EmployeeService;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @GetMapping("/")
+    public String home(Model model) {
+        model.addAttribute("employees",
+                employeeService.getAllEmployees());
+
+        return "employee-list";
+    }
+
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("employee", new Employee());
+        return "employee-form";
+    }
+
+    @PostMapping("/save")
+    public String saveEmployee(@ModelAttribute Employee employee) {
+        employeeService.saveEmployee(employee);
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String hello() {
+        return "Hello Bhumika";
+    }
+
+}
