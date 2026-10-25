@@ -217,7 +217,7 @@ export default function EmployeeDirectory({ onOpenAddModal, onEditEmployee, onVi
                       </td>
                       <td className="py-4 px-5 text-slate-300">{emp.designation}</td>
                       <td className="py-4 px-5 font-bold text-emerald-400 font-mono">
-                        ${emp.salary?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '0.00'}
+                        ₹{emp.salary?.toLocaleString('en-IN', { minimumFractionDigits: 2 }) || '0.00'}
                       </td>
                       <td className="py-4 px-5">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider inline-flex items-center gap-1 ${

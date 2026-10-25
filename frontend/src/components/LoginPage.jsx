@@ -19,6 +19,7 @@ export default function LoginPage({ onLoginSuccess }) {
         const userRole = username === 'admin' ? 'ADMIN' : username === 'manager' ? 'MANAGER' : 'EMPLOYEE';
         onLoginSuccess({
           username,
+          password,
           role: userRole,
           name: username === 'admin' ? 'Admin User' : username === 'manager' ? 'Manager' : 'Employee',
           email: `${username}@ems.com`

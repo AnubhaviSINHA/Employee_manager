@@ -62,7 +62,17 @@ export default function DepartmentView({ userRole }) {
       setShowModal(false);
       fetchDepartments();
     } catch (err) {
-      setError(err.response?.data?.message || 'Action failed.');
+      const errData = err.response?.data;
+      if (errData?.validationErrors) {
+        const firstErr = Object.values(errData.validationErrors)[0];
+        setError(firstErr);
+      } else if (errData?.message) {
+        setError(errData.message);
+      } else if (err.response?.status === 401 || err.response?.status === 403) {
+        setError('Unauthorized: Admin credentials required to modify departments.');
+      } else {
+        setError(err.message || 'Action failed.');
+      }
     }
   };
 

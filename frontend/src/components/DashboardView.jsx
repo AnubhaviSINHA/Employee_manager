@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, UserCheck, UserX, Building2, DollarSign, TrendingUp, Sparkles, ArrowUpRight } from 'lucide-react';
+import { Users, UserCheck, UserX, Building2, IndianRupee, TrendingUp, Sparkles, ArrowUpRight } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 
@@ -75,11 +75,11 @@ export default function DashboardView({ onNavigate }) {
 
           <div className="glass-panel px-5 py-3 rounded-2xl border border-purple-500/30 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-300">
-              <DollarSign className="w-5 h-5" />
+              <IndianRupee className="w-5 h-5" />
             </div>
             <div>
               <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Average Salary</span>
-              <h3 className="text-xl font-bold text-white">${metrics.averageSalary?.toLocaleString() || '0'}</h3>
+              <h3 className="text-xl font-bold text-white">₹{metrics.averageSalary?.toLocaleString('en-IN') || '0'}</h3>
             </div>
           </div>
         </div>

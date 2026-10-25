@@ -33,10 +33,16 @@ export default function App() {
   const [selectedUploadEmp, setSelectedUploadEmp] = useState(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
-  // Fetch departments on load so they are immediately available everywhere
+  // Configure Axios Basic Auth globally whenever currentUser changes
   useEffect(() => {
-    fetchDepartments();
-  }, []);
+    if (currentUser) {
+      const pass = currentUser.password || (currentUser.username === 'admin' ? 'admin123' : currentUser.username === 'manager' ? 'manager123' : 'employee123');
+      axios.defaults.headers.common['Authorization'] = `Basic ${btoa(`${currentUser.username}:${pass}`)}`;
+      fetchDepartments();
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+    }
+  }, [currentUser]);
 
   const fetchDepartments = async () => {
     try {

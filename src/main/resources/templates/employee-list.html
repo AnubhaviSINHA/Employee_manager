@@ -61,7 +61,7 @@
                                     <span className="badge badge-dept px-2 py-1" th:text="${emp.departmentName != null ? emp.departmentName : 'Unassigned'}">Engineering</span>
                                 </td>
                                 <td th:text="${emp.designation}">Software Engineer</td>
-                                <td className="fw-bold text-success" th:text="${'$' + #numbers.formatDecimal(emp.salary, 1, 'COMMA', 2, 'POINT')}">$85,000.00</td>
+                                <td className="fw-bold text-success" th:text="${'₹' + #numbers.formatDecimal(emp.salary, 1, 'COMMA', 2, 'POINT')}">₹85,000.00</td>
                             </tr>
                         </tbody>
                     </table>

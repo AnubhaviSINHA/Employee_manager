@@ -217,7 +217,7 @@ export default function EmployeeModal({ isOpen, onClose, employeeToEdit, onSaveS
 
             {/* Salary */}
             <div>
-              <label className="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Salary ($)</label>
+              <label className="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Salary (₹)</label>
               <input
                 type="number"
                 required
